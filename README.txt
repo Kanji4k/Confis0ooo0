@@ -99,20 +99,3 @@ UPDATE: HUD transparency, Item Glint, No Darkness
 * New files: Glint.java, NoDarkness.java, mixin/ItemGlintMixin.java (the workflow now expects 52 Java files).
   Changed: Glass, ConfigScreen, Config, Module, Modules, NewModules, ExtraModules, Waypoints, Hud, ConfisClient,
   Icons, confis0oooooo.mixins.json, build.yml.
-
-----------------------------------------------------------------------------------------------------
-UPDATE: Cosmetica (new tab in the Right Shift menu)
-----------------------------------------------------------------------------------------------------
-* New tab "COSMETICA" (between WAYPOINTS and SETTINGS). Wider window; search box in the header searches cosmetics.
-* 100 cosmetics, 10 categories x 10 (Hats, Head, Face, Capes, Wings, Back, Shoulder & Pets, Body, Hand, Shoes).
-  5 rarities (Common 15, Uncommon 25, Rare 30, Epic 20, Legendary 10). Each item has its own pixel icon, palette and 3D model.
-* Sidebar = categories + Unlocked counter/progress bar. Grid = visible cards only. Filters: category, rarity,
-  favorites, search, sort (Name / Rarity / Equipped). Tabs Wardrobe (unlocked) / Collection (all 100).
-* Click a card to select it (it is previewed on the player even before you equip it). Double-click = equip / unequip.
-  Buttons: Equip, Unequip, Favorite, Unequip All, Save Wardrobe (3 wardrobe slots 1/2/3: click to load, Save to store).
-* One item per slot, so a hat + cape + wings + shoes work together and two hats never do. Legendaries start locked
-  ("Unlock (free)" button: there is no shop, this is a local setting).
-* Preview: drag to rotate, Reset, Spin. Equipment slots around the figure: click a filled slot to remove it.
-* Saved in confis0oooooo.json under "cosmetica". New files: Cosmetic*.java (8 files).
-* LIMITS: cosmetics are shown in the menu preview only. They are NOT drawn on your player in the game world and other
-  players cannot see them. The preview is a built-in blocky figure, not your real skin.

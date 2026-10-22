@@ -23,7 +23,7 @@ jobs:
         run: |
           test -f src/main/resources/fabric.mod.json || { echo "MISSING src/main/resources (fabric.mod.json)"; exit 1; }
           test -d intermediary-src/client/confis || { echo "MISSING intermediary-src/client/confis"; exit 1; }
-          echo "Java files: $(find intermediary-src -name "*.java" | wc -l) (expect 60)"
+          echo "Java files: $(find intermediary-src -name "*.java" | wc -l) (expect 52)"
 
       - name: Convert source names (intermediary -> yarn)
         run: python3 tools/yarnify.py

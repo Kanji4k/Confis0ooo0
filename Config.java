@@ -68,9 +68,6 @@ public class Config {
     public String userListUrl = "";
     public Map<String, Float> itemScales = new LinkedHashMap<>();
 
-    /** Cosmetica wardrobe: worn items, favorites, unlocks, saved wardrobes. */
-    public CosmeticaState cosmetica = new CosmeticaState();
-
     // ---- Custom Item Glint (colors + opacity live in the "glint" module: bg = items, text = armor)
     /** true = use the custom glint, false = vanilla glint (the module switch must be on for either to apply). */
     public boolean glintCustom = true;
@@ -115,8 +112,6 @@ public class Config {
         if (instance.waypointList == null) instance.waypointList = new ArrayList<>();
         if (instance.hitboxes == null) instance.hitboxes = new LinkedHashMap<>();
         if (instance.itemScales == null) instance.itemScales = new LinkedHashMap<>();
-        if (instance.cosmetica == null) instance.cosmetica = new CosmeticaState();
-        instance.cosmetica.sanitize();
         if (instance.dropScale <= 0f) instance.dropScale = 1.0f;
         if (instance.freecamSpeed <= 0f) instance.freecamSpeed = 1.0f;
         instance.glintIntensity = Math.max(0, Math.min(100, instance.glintIntensity));

@@ -19,7 +19,7 @@ import net.minecraft.class_437;
 public class ConfigScreen extends class_437 {
     private enum Tab {
         ALL("ALL"), INFO("INFO"), HUD("HUD"), MAP("MAP"), FAVORITES("FAVORITES"),
-        WAYPOINTS("WAYPOINTS"), COSMETICA("COSMETICA"), SETTINGS("SETTINGS");
+        WAYPOINTS("WAYPOINTS"), SETTINGS("SETTINGS");
         final String label;
         Tab(String label) { this.label = label; }
     }
@@ -36,7 +36,6 @@ public class ConfigScreen extends class_437 {
     private static final int COLOR_EDITOR_H = 11 + 14 + 33 + 13;
 
     private Tab tab = Tab.ALL;
-    private final CosmeticaView cosmetica = new CosmeticaView();
     private Mode mode = Mode.MENU;
     private int page = 0;
     private int scroll = 0, maxScroll = 0;
@@ -301,9 +300,8 @@ public class ConfigScreen extends class_437 {
         super.method_25394(g, mouseX, mouseY, delta);
 
         Config cfg = Config.get();
-        boolean cosTab = tab == Tab.COSMETICA;     // the wardrobe needs more room than the module grid
-        pw = Math.min(cosTab ? 800 : 480, this.field_22789 - 16);
-        ph = Math.min(cosTab ? 450 : 284, this.field_22790 - 16);
+        pw = Math.min(480, this.field_22789 - 16);
+        ph = Math.min(284, this.field_22790 - 16);
         px = (this.field_22789 - pw) / 2;
         py = (this.field_22790 - ph) / 2;
         int accent = opaque(cfg.accent);
@@ -352,11 +350,11 @@ public class ConfigScreen extends class_437 {
         int sbX = toolsX - 6 - sbW;
         boolean showName = sbX - 6 >= titleEnd + this.field_22793.method_1727(pageName);
         if (showName) g.method_51433(this.field_22793, pageName, titleEnd, py + 8, Theme.text, !Theme.darkText);
-        if ((tab.ordinal() <= Tab.FAVORITES.ordinal() || tab == Tab.COSMETICA) && sbW >= 36) {
+        if (tab.ordinal() <= Tab.FAVORITES.ordinal() && sbW >= 36) {
             if (clicked) searchFocus = in(sbX, py + 5, sbW, 14);
             Glass.field(g, sbX, py + 5, sbW, 14, searchFocus, accent);
             boolean caret = searchFocus && (System.currentTimeMillis() / 500) % 2 == 0;
-            String shownText = query.isEmpty() && !searchFocus ? (tab == Tab.COSMETICA ? "Search cosmetics..." : "Search modules...") : (caret ? query + "_" : query);
+            String shownText = query.isEmpty() && !searchFocus ? "Search modules..." : (caret ? query + "_" : query);
             g.method_51433(this.field_22793, fitText(shownText, sbW - 8), sbX + 4, py + 8, query.isEmpty() && !searchFocus ? Theme.dim : Theme.text, !Theme.darkText);
         } else {
             searchFocus = false;
@@ -367,8 +365,7 @@ public class ConfigScreen extends class_437 {
         int nTabs = Tab.values().length;
         int need = 0;
         for (Tab t : Tab.values()) need = Math.max(need, this.field_22793.method_1727(t.label) + 4);
-        int tabBasis = Math.min(480, this.field_22789 - 16);      // decided on the normal menu width so the tab bar never jumps
-        int perRow = (tabBasis - 16 - tabGap * (nTabs - 1)) / nTabs >= need ? nTabs : 4;
+        int perRow = (pw - 16 - tabGap * (nTabs - 1)) / nTabs >= need ? nTabs : 4;
         int rows = (nTabs + perRow - 1) / perRow;
         top = 29 + rows * 19 + 4;
         for (int i = 0; i < nTabs; i++) {
@@ -381,7 +378,6 @@ public class ConfigScreen extends class_437 {
             int tabY = py + 29 + rowN * 19;
             if (button(g, x, tabY, tabW, 16, t.label, active ? ACTIVE : BTN, 0)) {
                 if (tab != t) playClick();
-                if (tab != t && (t == Tab.COSMETICA || tab == Tab.COSMETICA)) query = "";   // module and cosmetic searches stay separate
                 tab = t;
                 page = 0;
                 scroll = 0;
@@ -391,20 +387,9 @@ public class ConfigScreen extends class_437 {
 
         switch (tab) {
             case WAYPOINTS -> renderWaypoints(g, cfg);
-            case COSMETICA -> renderCosmetica(g);
             case SETTINGS -> renderSettings(g, cfg);
             default -> renderMods(g, cfg);
         }
-    }
-
-    /** Cosmetica page: the view draws into the content area under the tab bar and consumes its own clicks. */
-    private void renderCosmetica(class_332 g) {
-        cosmetica.mx = mx;
-        cosmetica.my = my;
-        cosmetica.down = down;
-        cosmetica.clicked = clicked;
-        cosmetica.render(g, this.field_22793, px + 8, py + top, pw - 16, ph - top - 6, query);
-        clicked = cosmetica.clicked;
     }
 
     /** Vanilla button click sound (used by the category tabs). */
@@ -597,10 +582,6 @@ public class ConfigScreen extends class_437 {
                 changeScale(hov, vertical > 0 ? 0.1f : -0.1f);
                 return true;
             }
-        }
-        if (mode == Mode.MENU && tab == Tab.COSMETICA) {
-            cosmetica.scroll(vertical);
-            return true;
         }
         if (mode == Mode.MENU && tab.ordinal() <= Tab.FAVORITES.ordinal()) {
             scroll = (int) Math.max(0, Math.min(maxScroll, scroll - vertical * 24));
